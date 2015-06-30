@@ -193,18 +193,18 @@
                 }
             }
         },
-        "/contact/{email_address_or_contact_ID_get}/tags": {
+        "/contact/{email}/tags": {
             "get": {
                 "parameters": [
                     {
-                        "email_address_or_contact_ID_get": null,
+                        "name": "email",
                         "in": "path",
-                        "description": "Must provide Contact ID or Email Address of contact",
+                        "description": "Must provide Email Address of contact",
                         "required": true,
                         "type": "string"
                     }
                 ],
-                "summary": "Retrieve all tags associated with a specific contact",
+                "summary": "GET TAGS BY EMAIL Retrieve all tags associated with a specific contact",
                 "description": "Retrieve all tags associated with a specific contact",
                 "tags": [
                     "Tags"
@@ -217,27 +217,28 @@
                         }
                     }
                 }
-            }
-        },
-        "/contact/{email_address_or_contact_ID_post}/tags": {
+            },
             "post": {
                 "parameters": [
                     {
-                        "email_address_or_contact_ID_post": null,
+                        "name": "email",
                         "in": "path",
-                        "description": "Must provide Contact ID or Email Address of contact",
+                        "description": "Must provide Email Address of contact",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "name": "body",
+                        "name": "tags",
                         "in": "body",
                         "description": "User needs to specify either id or name of the Tag that needs to be added to the Contact",
                         "required": true,
-                        "type": "array"
+                        "type": "array",
+                        "schema": {
+                            "$ref": "#/definitions/SimpleTag"
+                        }
                     }
                 ],
-                "summary": "Add tags to a specific contact",
+                "summary": "Add tags by email to a specific contact",
                 "description": "Add tags to a specific contact",
                 "tags": [
                     "Tags"
@@ -262,15 +263,13 @@
                         }
                     }
                 }
-            }
-        },
-        "/contact/{email_address_or_contact_ID_delete}/tags": {
+            },
             "delete": {
                 "parameters": [
                     {
-                        "email_address_or_contact_ID_delete": null,
+                        "name": "email",
                         "in": "path",
-                        "description": "Must provide Contact ID or Email Address of contact",
+                        "description": "Must provide Email Address of contact",
                         "required": true,
                         "type": "string"
                     },
@@ -309,13 +308,128 @@
                 }
             }
         },
-        "/contact/{email_address_or_contact_ID_get}/campaign": {
+        "/contact/{id}/tags": {
             "get": {
                 "parameters": [
                     {
-                        "email_address_or_contact_ID_get": null,
+                        "name": "id",
                         "in": "path",
-                        "description": "Must provide Contact ID or Email Address of contact",
+                        "description": "Must provide Contact ID of contact",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "summary": "GET TAGS BY ID Retrieve all tags associated with a specific contact",
+                "description": "Retrieve all tags associated with a specific contact",
+                "tags": [
+                    "Tags"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successfully returned tags",
+                        "schema": {
+                            "type": "array"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Must provide Contact Id of contact",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "tags",
+                        "in": "body",
+                        "description": "User needs to specify either id or name of the Tag that needs to be added to the Contact",
+                        "required": true,
+                        "type": "array",
+                        "schema": {
+                            "$ref": "#/definitions/SimpleTag"
+                        }
+                    }
+                ],
+                "summary": "Add tags by email to a specific contact",
+                "description": "Add tags to a specific contact",
+                "tags": [
+                    "Tags"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successfully created tags",
+                        "schema": {
+                            "type": "array"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "schema": {
+                            "type": "array"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Must provide Contact Id of contact",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "User needs to specify either id or name of the Tag that needs to be deleted for the Contact.",
+                        "required": true,
+                        "type": "array"
+                    }
+                ],
+                "summary": "Delete tags from a specific contact",
+                "description": "Delete tags from a specific contact",
+                "tags": [
+                    "Tags"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successfully deleted tags",
+                        "schema": {
+                            "type": "array"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "schema": {
+                            "type": "array"
+                        }
+                    }
+                }
+            }
+        },
+        "/contact/{email}/campaign": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "path",
+                        "description": "Must provide Email Address of contact",
                         "required": true,
                         "type": "string"
                     }
@@ -333,15 +447,13 @@
                         }
                     }
                 }
-            }
-        },
-        "/contact/{email_address_or_contact_ID_post}/campaign": {
+            },
             "post": {
                 "parameters": [
                     {
-                        "email_address_or_contact_ID_post": null,
+                        "name": "email",
                         "in": "path",
-                        "description": "Must provide Contact ID or Email Address of contact",
+                        "description": "Must provide Email Address of contact",
                         "required": true,
                         "type": "string"
                     },
@@ -378,15 +490,125 @@
                         }
                     }
                 }
-            }
-        },
-        "/contact/{email_address_or_contact_ID_delete}/campaign": {
+            },
             "delete": {
                 "parameters": [
                     {
-                        "email_address_or_contact_ID_delete": null,
+                        "name": "email",
                         "in": "path",
-                        "description": "Must provide Contact ID or Email Address of contact",
+                        "description": "Must provide Email Address of contact",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "User needs to specify either Campaign ID or name of the Campaign that needs to be stopped for the Contact.",
+                        "required": true,
+                        "type": "array"
+                    }
+                ],
+                "summary": "Stop campaign for a specific contact",
+                "description": "Stop campaign for a specific contact",
+                "tags": [
+                    "Campaigns"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successfully stopped campaign",
+                        "schema": {
+                            "type": "array"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "schema": {
+                            "type": "array"
+                        }
+                    }
+                }
+            }
+        },
+        "/contact/{id}/campaign": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Must provide Contact ID of contact",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "summary": "Retrieve all campaigns associated with a specific contact",
+                "description": "Retrieve all campaigns associated with a specific contact",
+                "tags": [
+                    "Campaigns"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully returned campaigns for contact",
+                        "schema": {
+                            "type": "array"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Must provide Contact ID of contact",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "User needs to specify either Campaign ID or name of the Campaign that needs to be started for the Contact",
+                        "required": true,
+                        "type": "array"
+                    }
+                ],
+                "summary": "Start campaign for a specific contact",
+                "description": "Start campaign for a specific contact",
+                "tags": [
+                    "Campaigns"
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successfully started campaign",
+                        "schema": {
+                            "type": "array"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "array"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "schema": {
+                            "type": "array"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Must provide Contact ID of contact",
                         "required": true,
                         "type": "string"
                     },
@@ -902,13 +1124,15 @@
         },
         "ContactSalesRep": {
             "description": "sales rep for this contact",
-            "username": {
-                "type": "string",
-                "description": "username of sales rep"
-            },
-            "id": {
-                "type": "string",
-                "description": "unique id of sales rep"
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "description": "username of sales rep"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "unique id of sales rep"
+                }
             }
         },
         "ContactSource": {
@@ -920,6 +1144,14 @@
                 },
                 "id": {
                     "description": "unique identifier",
+                    "type": "string"
+                }
+            }
+        },
+        "SmipleTag": {
+            "description": "Proper Tags Array",
+            "properties": {
+                "name": {
                     "type": "string"
                 }
             }
