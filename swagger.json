@@ -126,15 +126,15 @@ paths:
             type: array
             items:
               $ref: '#/definitions/ContactTemperature'
-  /contact/{email}/tags:
+  /contact/{email_or_id}/tags:
     get:
       parameters:
-        - name: email
+        - name: email_or_id
           in: path
-          description: Must provide Email Address of contact
+          description: Must provide Contact ID or Email Address of contact
           required: true
           type: string
-      summary: GET TAGS BY EMAIL Retrieve all tags associated with a specific contact
+      summary: Retrieve all tags associated with a specific contact
       description: Retrieve all tags associated with a specific contact
       tags:
         - Tags
@@ -147,9 +147,9 @@ paths:
               $ref: '#/definitions/Tag'
     post:
       parameters:
-        - name: email
+        - name: email_or_id
           in: path
-          description: Must provide Email Address of contact
+          description: Must provide Contact ID or Email Address of contact
           required: true
           type: string
         - name: body
@@ -181,9 +181,9 @@ paths:
             type: string
     delete:
       parameters:
-        - name: email
+        - name: email_or_id
           in: path
-          description: Must provide Email Address of contact
+          description: Must provide Contact ID or Email Address of contact
           required: true
           type: string
         - name: body
@@ -211,93 +211,12 @@ paths:
           description: Method Not Allowed
           schema:
             type: string
-  /contact/{id}/tags:
+  /contact/{email_or_id}/campaign:
     get:
       parameters:
-        - name: id
+        - name: email_or_id
           in: path
-          description: Must provide Contact ID of contact
-          required: true
-          type: string
-      summary: GET TAGS BY ID Retrieve all tags associated with a specific contact
-      description: Retrieve all tags associated with a specific contact
-      tags:
-        - Tags
-      responses:
-        '200':
-          description: successfully returned tags
-          schema:
-            type: array
-    post:
-      parameters:
-        - name: id
-          in: path
-          description: Must provide Contact Id of contact
-          required: true
-          type: string
-        - name: body
-          in: body
-          description: User needs to specify either Tag IDs or name of the Tags that needs to be stopped for the Contact.
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/SimpleTag'
-      summary: Add tags by email to a specific contact
-      description: Add tags to a specific contact
-      tags:
-        - Tags
-      responses:
-        '201':
-          description: Successfully created tags
-          schema:
-            type: array
-        '400':
-          description: Bad Request
-          schema:
-            type: array
-        '405':
-          description: Method Not Allowed
-          schema:
-            type: array
-    delete:
-      parameters:
-        - name: id
-          in: path
-          description: Must provide Contact Id of contact
-          required: true
-          type: string
-        - name: body
-          in: body
-          description: User needs to specify either Tag IDs or name of the Tags that needs to be stopped for the Contact.
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/SimpleTag'
-      summary: Delete tags from a specific contact
-      description: Delete tags from a specific contact
-      tags:
-        - Tags
-      responses:
-        '201':
-          description: Successfully deleted tags
-          schema:
-            type: array
-        '400':
-          description: Bad Request
-          schema:
-            type: array
-        '405':
-          description: Method Not Allowed
-          schema:
-            type: array
-  /contact/{email}/campaign:
-    get:
-      parameters:
-        - name: email
-          in: path
-          description: Must provide Email Address of contact
+          description: Must provide Contact ID or Email Address of contact
           required: true
           type: string
       summary: Retrieve all campaigns associated with a specific contact
@@ -309,11 +228,13 @@ paths:
           description: Successfully returned campaigns for contact
           schema:
             type: array
+            items:
+              $ref: '#/definitions/Campaign'
     post:
       parameters:
-        - name: email
+        - name: email_or_id
           in: path
-          description: Must provide Email Address of contact
+          description: Must provide Contact ID or Email Address of contact
           required: true
           type: string
         - name: body
@@ -332,20 +253,20 @@ paths:
         '201':
           description: Successfully started campaign
           schema:
-            type: array
+            type: string
         '400':
           description: Bad Request
           schema:
-            type: array
+            type: string
         '405':
           description: Method Not Allowed
           schema:
-            type: array
+            type: string
     delete:
       parameters:
-        - name: email
+        - name: email_or_id
           in: path
-          description: Must provide Email Address of contact
+          description: Must provide Contact ID or Email Address of contact
           required: true
           type: string
         - name: body
@@ -364,96 +285,15 @@ paths:
         '201':
           description: Successfully stopped campaign
           schema:
-            type: array
+            type: string
         '400':
           description: Bad Request
           schema:
-            type: array
+            type: string
         '405':
           description: Method Not Allowed
           schema:
-            type: array
-  /contact/{id}/campaign:
-    get:
-      parameters:
-        - name: id
-          in: path
-          description: Must provide Contact ID of contact
-          required: true
-          type: string
-      summary: Retrieve all campaigns associated with a specific contact
-      description: Retrieve all campaigns associated with a specific contact
-      tags:
-        - Campaigns
-      responses:
-        '200':
-          description: Successfully returned campaigns for contact
-          schema:
-            type: array
-    post:
-      parameters:
-        - name: id
-          in: path
-          description: Must provide Contact ID of contact
-          required: true
-          type: string
-        - name: body
-          in: body
-          description: User needs to specify either Campaign ID or name of the Campaign that needs to be stopped for the Contact.
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Campaign'
-      summary: Start campaign for a specific contact
-      description: Start campaign for a specific contact
-      tags:
-        - Campaigns
-      responses:
-        '201':
-          description: Successfully started campaign
-          schema:
-            type: array
-        '400':
-          description: Bad Request
-          schema:
-            type: array
-        '405':
-          description: Method Not Allowed
-          schema:
-            type: array
-    delete:
-      parameters:
-        - name: id
-          in: path
-          description: Must provide Contact ID of contact
-          required: true
-          type: string
-        - name: body
-          in: body
-          description: User needs to specify either Campaign ID or name of the Campaign that needs to be stopped for the Contact.
-          required: true
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Campaign'
-      summary: Stop campaign for a specific contact
-      description: Stop campaign for a specific contact
-      tags:
-        - Campaigns
-      responses:
-        '201':
-          description: Successfully stopped campaign
-          schema:
-            type: array
-        '400':
-          description: Bad Request
-          schema:
-            type: array
-        '405':
-          description: Method Not Allowed
-          schema:
-            type: array
+            type: string
 securityDefinitions:
   api_key:
     type: apiKey
