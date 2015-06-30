@@ -1,4 +1,4 @@
-swagger: '2.0'
+swagger: 2.0
 info:
   title: Hatchbuck API
   description: Do magic things with the Hatchbuck API
@@ -15,7 +15,7 @@ paths:
   /contact/search:
     post:
       summary: Contact search
-      description: 'Used to search for contacts, if contactId is specified then it will only use that parameter, otherwise it will use AND criteria for other supplied parameters'
+      description: Used to search for contacts, if contactId is specified then it will only use that parameter, otherwise it will use AND criteria for other supplied parameters
       consumes:
         - application/json
       parameters:
@@ -24,7 +24,7 @@ paths:
           description: contact search criteria
           required: true
           schema:
-            $ref: '#/definitions/ContactSearch'
+            $ref: #/definitions/ContactSearch
       tags:
         - Contacts
       responses:
@@ -33,19 +33,19 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/ContactResult'
+              $ref: #/definitions/ContactResult
         400:
           description: Not found or invalid parameters
           schema:
-            $ref: '#/definitions/Error'
+            $ref: #/definitions/Error
         401:
           description: Security error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: #/definitions/Error
         500:
           description: Unspecified error
           schema:
-            $ref: '#/definitions/Error'
+            $ref: #/definitions/Error
   /contact:
     post:
       summary: create a new contact
@@ -58,15 +58,15 @@ paths:
           description: new contact
           required: true
           schema:
-            $ref: '#/definitions/Contact'
+            $ref: #/definitions/Contact
       tags:
         - Contacts
       responses:
-        '200':
+        200:
           description: success
           schema:
             type: object
-            $ref: '#/definitions/ContactResult'
+            $ref: #/definitions/ContactResult
     put:
       summary: update a contact
       description: update a contact
@@ -78,15 +78,15 @@ paths:
           description: updated contact
           required: true
           schema:
-            $ref: '#/definitions/Contact'
+            $ref: #/definitions/Contact
       tags:
         - Contacts
       responses:
-        '200':
+        200:
           description: success
           schema:
             type: object
-            $ref: '#/definitions/ContactResult'
+            $ref: #/definitions/ContactResult
   /settings/contactStatus:
     get:
       summary: get all configured contact statuses
@@ -94,12 +94,12 @@ paths:
       tags:
         - Settings
       responses:
-        '200':
+        200:
           description: array of 1 or more contact statuses
           schema:
             type: array
             items:
-              $ref: '#/definitions/ContactStatus'
+              $ref: #/definitions/ContactStatus
   /settings/source:
     get:
       summary: get all configured contact sources
@@ -107,12 +107,12 @@ paths:
       tags:
         - Settings
       responses:
-        '200':
+        200:
           description: array of 1 or more contact sources
           schema:
             type: array
             items:
-              $ref: '#/definitions/ContactSource'
+              $ref: #/definitions/ContactSource
   /settings/temperature:
     get:
       summary: get all configured contact temperatures
@@ -120,12 +120,12 @@ paths:
       tags:
         - Settings
       responses:
-        '200':
+        200:
           description: array of 1 or more contact temperatures
           schema:
             type: array
             items:
-              $ref: '#/definitions/ContactTemperature'
+              $ref: #/definitions/ContactTemperature
   /contact/{email_or_id}/tags:
     get:
       parameters:
@@ -139,12 +139,12 @@ paths:
       tags:
         - Tags
       responses:
-        '200':
+        200:
           description: successfully returned tags
           schema:
             type: array
             items:
-              $ref: '#/definitions/Tag'
+              $ref: #/definitions/Tag
     post:
       parameters:
         - name: email_or_id
@@ -159,23 +159,23 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/SimpleTag'
+              $ref: #/definitions/SimpleTag
       summary: Add tags by email to a specific contact
       description: Add tags to a specific contact
       tags:
         - Tags
       responses:
-        '201':
+        201:
           description: Successfully created tags
           schema:
             type: array
             items:
-              $ref: '#/definitions/Tag'
-        '400':
+              $ref: #/definitions/Tag
+        400:
           description: Bad Request
           schema:
             type: string
-        '405':
+        405:
           description: Method Not Allowed
           schema:
             type: string
@@ -193,21 +193,21 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/SimpleTag'
+              $ref: #/definitions/SimpleTag
       summary: Delete tags from a specific contact
       description: Delete tags from a specific contact
       tags:
         - Tags
       responses:
-        '201':
+        201:
           description: Successfully deleted tags
           schema:
             type: string
-        '400':
+        400:
           description: Bad Request
           schema:
             type: string
-        '405':
+        405:
           description: Method Not Allowed
           schema:
             type: string
@@ -224,12 +224,12 @@ paths:
       tags:
         - Campaigns
       responses:
-        '200':
+        200:
           description: Successfully returned campaigns for contact
           schema:
             type: array
             items:
-              $ref: '#/definitions/Campaign'
+              $ref: #/definitions/Campaign
     post:
       parameters:
         - name: email_or_id
@@ -244,21 +244,21 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Campaign'
+              $ref: #/definitions/Campaign
       summary: Start campaign for a specific contact
       description: Start campaign for a specific contact
       tags:
         - Campaigns
       responses:
-        '201':
+        201:
           description: Successfully started campaign
           schema:
             type: string
-        '400':
+        400:
           description: Bad Request
           schema:
             type: string
-        '405':
+        405:
           description: Method Not Allowed
           schema:
             type: string
@@ -276,21 +276,21 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Campaign'
+              $ref: #/definitions/Campaign
       summary: Stop campaign for a specific contact
       description: Stop campaign for a specific contact
       tags:
         - Campaigns
       responses:
-        '201':
+        201:
           description: Successfully stopped campaign
           schema:
             type: string
-        '400':
+        400:
           description: Bad Request
           schema:
             type: string
-        '405':
+        405:
           description: Method Not Allowed
           schema:
             type: string
@@ -314,7 +314,7 @@ definitions:
       emails:
         type: array
         items:
-          $ref: '#/definitions/ContactSearchEmail'
+          $ref: #/definitions/ContactSearchEmail
         description: "Any email addresses you're searching for"
   ContactSearchEmail:
     properties:
@@ -342,36 +342,36 @@ definitions:
         type: array
         description: emails
         items:
-          $ref: '#/definitions/Email'
+          $ref: #/definitions/Email
       phones:
         type: array
         description: phones
         items:
-          $ref: '#/definitions/Phone'
+          $ref: #/definitions/Phone
       tags:
         type: array
         description: tags
         items:
-          $ref: '#/definitions/Tag'
+          $ref: #/definitions/Tag
       campaigns:
         type: array
         description: current and past campaigns
         items:
-          $ref: '#/definitions/Campaign'
+          $ref: #/definitions/Campaign
       status:
         type: object
-        $ref: '#/definitions/ContactStatus'
+        $ref: #/definitions/ContactStatus
       temperature:
         type: object
-        $ref: '#/definitions/ContactTemperature'
+        $ref: #/definitions/ContactTemperature
       salesRep:
         type: object
-        $ref: '#/definitions/ContactSalesRep'
+        $ref: #/definitions/ContactSalesRep
       addresses:
         type: array
         description: street addresses
         items:
-          $ref: '#/definitions/StreetAddress'
+          $ref: #/definitions/StreetAddress
       subscribed:
         type: boolean
         description: email marketing opt-in
@@ -382,17 +382,17 @@ definitions:
         type: array
         description: social network links for contact
         items:
-          $ref: '#/definitions/SocialNetwork'
+          $ref: #/definitions/SocialNetwork
       instantMessaging:
         type: array
         description: instant messaging ids
         items:
-          $ref: '#/definitions/InstantMessaging'
+          $ref: #/definitions/InstantMessaging
       website:
         type: array
         description: websites for this contact
         items:
-          $ref: '#/definitions/Website'
+          $ref: #/definitions/Website
       source:
         type: string
         description: lead source
@@ -403,7 +403,7 @@ definitions:
         type: array
         description: custom fields for this contact
         items:
-          $ref: '#/definitions/CustomField'
+          $ref: #/definitions/CustomField
   Contact:
     properties:
       contactId:
@@ -425,36 +425,36 @@ definitions:
         type: array
         description: emails
         items:
-          $ref: '#/definitions/Email'
+          $ref: #/definitions/Email
       phones:
         type: array
         description: phones
         items:
-          $ref: '#/definitions/Phone'
+          $ref: #/definitions/Phone
       tags:
         type: array
         description: tags
         items:
-          $ref: '#/definitions/Tag'
+          $ref: #/definitions/Tag
       campaigns:
         type: array
         description: current and past campaigns
         items:
-          $ref: '#/definitions/Campaign'
+          $ref: #/definitions/Campaign
       status:
         type: object
-        $ref: '#/definitions/ContactStatus'
+        $ref: #/definitions/ContactStatus
       temperature:
         type: object
-        $ref: '#/definitions/ContactTemperature'
+        $ref: #/definitions/ContactTemperature
       salesRep:
         type: object
-        $ref: '#/definitions/ContactSalesRep'
+        $ref: #/definitions/ContactSalesRep
       addresses:
         type: array
         description: street addresses
         items:
-          $ref: '#/definitions/StreetAddress'
+          $ref: #/definitions/StreetAddress
       subscribed:
         type: boolean
         description: email marketing opt-in
@@ -465,17 +465,17 @@ definitions:
         type: array
         description: social network links for contact
         items:
-          $ref: '#/definitions/SocialNetwork'
+          $ref: #/definitions/SocialNetwork
       instantMessaging:
         type: array
         description: instant messaging ids
         items:
-          $ref: '#/definitions/InstantMessaging'
+          $ref: #/definitions/InstantMessaging
       website:
         type: array
         description: websites for this contact
         items:
-          $ref: '#/definitions/Website'
+          $ref: #/definitions/Website
       source:
         type: string
         description: lead source
@@ -486,7 +486,7 @@ definitions:
         type: array
         description: custom fields for this contact
         items:
-          $ref: '#/definitions/CustomField'
+          $ref: #/definitions/CustomField
   Email:
     properties:
       id:
@@ -559,7 +559,7 @@ definitions:
         description: "country, must match Hatchbuck's country list"
       type:
         type: string
-        description: 'work, home, etc...'
+        description: "work, home, etc..."
       typeId:
         type: string
         description: unique id of this address type
@@ -578,7 +578,7 @@ definitions:
         type: string
         description: unique id for this social network type
   InstantMessaging:
-    description: 'when creating a new InstantMessaging record, the type or typeId must be populated with an existing value from your configuration.'
+    description: "when creating a new InstantMessaging record, the type or typeId must be populated with an existing value from your configuration."
     properties:
       id:
         type: string
@@ -609,7 +609,7 @@ definitions:
         description: unique custom field name for this contact
       type:
         type: string
-        description: 'can be Text, Dropdown, MText, Number or Date'
+        description: can be Text, Dropdown, MText, Number or Date
       value:
         type: string
         description: value of custom field.  regardless of datatype specified it will always return as a string value in this field
