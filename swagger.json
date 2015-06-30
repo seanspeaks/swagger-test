@@ -1,935 +1,660 @@
-{
-    "swagger": "2.0",
-    "info": {
-        "title": "Hatchbuck API",
-        "description": "Do magic things with the Hatchbuck API",
-        "version": "1.0.0"
-    },
-    "host": "api.hatchbuck.com",
-    "schemes": [
-        "https"
-    ],
-    "basePath": "/api/v1",
-    "produces": [
-        "application/json"
-    ],
-    "security": [
-        {
-            "api_key": []
-        }
-    ],
-    "paths": {
-        "/contact/search": {
-            "post": {
-                "summary": "Contact search",
-                "description": "Used to search for contacts, if contactId is specified then it will only use that parameter, otherwise it will use AND criteria for other supplied parameters",
-                "consumes": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "contact search criteria",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ContactSearch"
-                        }
-                    }
-                ],
-                "tags": [
-                    "Contacts"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Array of 1 or more contacts",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/ContactResult"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Not found or invalid parameters",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "401": {
-                        "description": "Security error",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    },
-                    "500": {
-                        "description": "Unspecified error",
-                        "schema": {
-                            "$ref": "#/definitions/Error"
-                        }
-                    }
-                }
-            }
-        },
-        "/contact": {
-            "post": {
-                "summary": "create a new contact",
-                "description": "create a new contact",
-                "consumes": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "new contact",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Contact"
-                        }
-                    }
-                ],
-                "tags": [
-                    "Contacts"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/ContactResult"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "summary": "update a contact",
-                "description": "update a contact",
-                "consumes": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "updated contact",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Contact"
-                        }
-                    }
-                ],
-                "tags": [
-                    "Contacts"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "success",
-                        "schema": {
-                            "type": "object",
-                            "$ref": "#/definitions/ContactResult"
-                        }
-                    }
-                }
-            }
-        },
-        "/settings/contactStatus": {
-            "get": {
-                "summary": "get all configured contact statuses",
-                "description": "get configured contact statuses",
-                "tags": [
-                    "Settings"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "array of 1 or more contact statuses",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/ContactStatus"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/settings/source": {
-            "get": {
-                "summary": "get all configured contact sources",
-                "description": "get all configured contact sources",
-                "tags": [
-                    "Settings"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "array of 1 or more contact sources",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/ContactSource"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/settings/temperature": {
-            "get": {
-                "summary": "get all configured contact temperatures",
-                "description": "get all configured contact temperatures",
-                "tags": [
-                    "Settings"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "array of 1 or more contact temperatures",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/ContactTemperature"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/contact/{email_address_or_contact_ID_get}/tags": {
-            "get": {
-                "parameters": [
-                    {
-                        "email_address_or_contact_ID_get": null,
-                        "in": "path",
-                        "description": "Must provide Contact ID or Email Address of contact",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "summary": "Retrieve all tags associated with a specific contact",
-                "description": "Retrieve all tags associated with a specific contact",
-                "tags": [
-                    "Tags"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successfully returned tags",
-                        "schema": {
-                            "type": "array"
-                        }
-                    }
-                }
-            }
-        },
-        "/contact/{email_address_or_contact_ID_post}/tags": {
-            "post": {
-                "parameters": [
-                    {
-                        "email_address_or_contact_ID_post": null,
-                        "in": "path",
-                        "description": "Must provide Contact ID or Email Address of contact",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "User needs to specify either id or name of the Tag that needs to be added to the Contact",
-                        "required": true,
-                        "type": "array"
-                    }
-                ],
-                "summary": "Add tags to a specific contact",
-                "description": "Add tags to a specific contact",
-                "tags": [
-                    "Tags"
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Successfully created tags",
-                        "schema": {
-                            "type": "array"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "array"
-                        }
-                    },
-                    "405": {
-                        "description": "Method Not Allowed",
-                        "schema": {
-                            "type": "array"
-                        }
-                    }
-                }
-            }
-        },
-        "/contact/{email_address_or_contact_ID_delete}/tags": {
-            "delete": {
-                "parameters": [
-                    {
-                        "email_address_or_contact_ID_delete": null,
-                        "in": "path",
-                        "description": "Must provide Contact ID or Email Address of contact",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "User needs to specify either id or name of the Tag that needs to be deleted for the Contact.",
-                        "required": true,
-                        "type": "array"
-                    }
-                ],
-                "summary": "Delete tags from a specific contact",
-                "description": "Delete tags from a specific contact",
-                "tags": [
-                    "Tags"
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Successfully deleted tags",
-                        "schema": {
-                            "type": "array"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "array"
-                        }
-                    },
-                    "405": {
-                        "description": "Method Not Allowed",
-                        "schema": {
-                            "type": "array"
-                        }
-                    }
-                }
-            }
-        },
-        "/contact/{email_address_or_contact_ID_get}/campaign": {
-            "get": {
-                "parameters": [
-                    {
-                        "email_address_or_contact_ID_get": null,
-                        "in": "path",
-                        "description": "Must provide Contact ID or Email Address of contact",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "summary": "Retrieve all campaigns associated with a specific contact",
-                "description": "Retrieve all campaigns associated with a specific contact",
-                "tags": [
-                    "Campaigns"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successfully returned campaigns for contact",
-                        "schema": {
-                            "type": "array"
-                        }
-                    }
-                }
-            }
-        },
-        "/contact/{email_address_or_contact_ID_post}/campaign": {
-            "post": {
-                "parameters": [
-                    {
-                        "email_address_or_contact_ID_post": null,
-                        "in": "path",
-                        "description": "Must provide Contact ID or Email Address of contact",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "User needs to specify either Campaign ID or name of the Campaign that needs to be started for the Contact",
-                        "required": true,
-                        "type": "array"
-                    }
-                ],
-                "summary": "Start campaign for a specific contact",
-                "description": "Start campaign for a specific contact",
-                "tags": [
-                    "Campaigns"
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Successfully started campaign",
-                        "schema": {
-                            "type": "array"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "array"
-                        }
-                    },
-                    "405": {
-                        "description": "Method Not Allowed",
-                        "schema": {
-                            "type": "array"
-                        }
-                    }
-                }
-            }
-        },
-        "/contact/{email_address_or_contact_ID_delete}/campaign": {
-            "delete": {
-                "parameters": [
-                    {
-                        "email_address_or_contact_ID_delete": null,
-                        "in": "path",
-                        "description": "Must provide Contact ID or Email Address of contact",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "description": "User needs to specify either Campaign ID or name of the Campaign that needs to be stopped for the Contact.",
-                        "required": true,
-                        "type": "array"
-                    }
-                ],
-                "summary": "Stop campaign for a specific contact",
-                "description": "Stop campaign for a specific contact",
-                "tags": [
-                    "Campaigns"
-                ],
-                "responses": {
-                    "201": {
-                        "description": "Successfully stopped campaign",
-                        "schema": {
-                            "type": "array"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "array"
-                        }
-                    },
-                    "405": {
-                        "description": "Method Not Allowed",
-                        "schema": {
-                            "type": "array"
-                        }
-                    }
-                }
-            }
-        }
-    },
-    "securityDefinitions": {
-        "api_key": {
-            "type": "apiKey",
-            "name": "api_key",
-            "in": "query"
-        }
-    },
-    "definitions": {
-        "ContactSearch": {
-            "properties": {
-                "contactId": {
-                    "type": "string",
-                    "description": "Unique identifier for contacts."
-                },
-                "firstName": {
-                    "type": "string",
-                    "description": "Description of product."
-                },
-                "lastName": {
-                    "type": "string",
-                    "description": "Display name of product."
-                },
-                "emails": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/ContactSearchEmail"
-                    },
-                    "description": "Any email addresses you're searching for"
-                }
-            }
-        },
-        "ContactSearchEmail": {
-            "properties": {
-                "address": {
-                    "type": "string",
-                    "description": "email address"
-                }
-            }
-        },
-        "ContactResult": {
-            "properties": {
-                "contactId": {
-                    "type": "string",
-                    "description": "unique identifier for contact"
-                },
-                "firstName": {
-                    "type": "string",
-                    "description": "contact's first name"
-                },
-                "lastName": {
-                    "type": "string",
-                    "description": "contact's last name"
-                },
-                "title": {
-                    "type": "string",
-                    "description": "contact's title at their place of business"
-                },
-                "company": {
-                    "type": "string",
-                    "description": "company name"
-                },
-                "emails": {
-                    "type": "array",
-                    "description": "emails",
-                    "items": {
-                        "$ref": "#/definitions/Email"
-                    }
-                },
-                "phones": {
-                    "type": "array",
-                    "description": "phones",
-                    "items": {
-                        "$ref": "#/definitions/Phone"
-                    }
-                },
-                "tags": {
-                    "type": "array",
-                    "description": "tags",
-                    "items": {
-                        "$ref": "#/definitions/Tag"
-                    }
-                },
-                "campaigns": {
-                    "type": "array",
-                    "description": "current and past campaigns",
-                    "items": {
-                        "$ref": "#/definitions/Campaign"
-                    }
-                },
-                "status": {
-                    "type": "object",
-                    "$ref": "#/definitions/ContactStatus"
-                },
-                "temperature": {
-                    "type": "object",
-                    "$ref": "#/definitions/ContactTemperature"
-                },
-                "salesRep": {
-                    "type": "object",
-                    "$ref": "#/definitions/ContactSalesRep"
-                },
-                "addresses": {
-                    "type": "array",
-                    "description": "street addresses",
-                    "items": {
-                        "$ref": "#/definitions/StreetAddress"
-                    }
-                },
-                "subscribed": {
-                    "type": "boolean",
-                    "description": "email marketing opt-in"
-                },
-                "timezone": {
-                    "type": "string",
-                    "description": "timezone"
-                },
-                "socialNetworks": {
-                    "type": "array",
-                    "description": "social network links for contact",
-                    "items": {
-                        "$ref": "#/definitions/SocialNetwork"
-                    }
-                },
-                "instantMessaging": {
-                    "type": "array",
-                    "description": "instant messaging ids",
-                    "items": {
-                        "$ref": "#/definitions/InstantMessaging"
-                    }
-                },
-                "website": {
-                    "type": "array",
-                    "description": "websites for this contact",
-                    "items": {
-                        "$ref": "#/definitions/Website"
-                    }
-                },
-                "source": {
-                    "type": "string",
-                    "description": "lead source"
-                },
-                "referredBy": {
-                    "type": "string",
-                    "description": "optional contact name who may have referred this contact"
-                },
-                "customFields": {
-                    "type": "array",
-                    "description": "custom fields for this contact",
-                    "items": {
-                        "$ref": "#/definitions/CustomField"
-                    }
-                }
-            }
-        },
-        "Contact": {
-            "properties": {
-                "contactId": {
-                    "type": "string",
-                    "description": "unique identifier for contact"
-                },
-                "firstName": {
-                    "type": "string",
-                    "description": "contact's first name"
-                },
-                "lastName": {
-                    "type": "string",
-                    "description": "contact's last name"
-                },
-                "title": {
-                    "type": "string",
-                    "description": "contact's title at their place of business"
-                },
-                "company": {
-                    "type": "string",
-                    "description": "company name"
-                },
-                "emails": {
-                    "type": "array",
-                    "description": "emails",
-                    "items": {
-                        "$ref": "#/definitions/Email"
-                    }
-                },
-                "phones": {
-                    "type": "array",
-                    "description": "phones",
-                    "items": {
-                        "$ref": "#/definitions/Phone"
-                    }
-                },
-                "tags": {
-                    "type": "array",
-                    "description": "tags",
-                    "items": {
-                        "$ref": "#/definitions/Tag"
-                    }
-                },
-                "campaigns": {
-                    "type": "array",
-                    "description": "current and past campaigns",
-                    "items": {
-                        "$ref": "#/definitions/Campaign"
-                    }
-                },
-                "status": {
-                    "type": "object",
-                    "$ref": "#/definitions/ContactStatus"
-                },
-                "temperature": {
-                    "type": "object",
-                    "$ref": "#/definitions/ContactTemperature"
-                },
-                "salesRep": {
-                    "type": "object",
-                    "$ref": "#/definitions/ContactSalesRep"
-                },
-                "addresses": {
-                    "type": "array",
-                    "description": "street addresses",
-                    "items": {
-                        "$ref": "#/definitions/StreetAddress"
-                    }
-                },
-                "subscribed": {
-                    "type": "boolean",
-                    "description": "email marketing opt-in"
-                },
-                "timezone": {
-                    "type": "string",
-                    "description": "timezone"
-                },
-                "socialNetworks": {
-                    "type": "array",
-                    "description": "social network links for contact",
-                    "items": {
-                        "$ref": "#/definitions/SocialNetwork"
-                    }
-                },
-                "instantMessaging": {
-                    "type": "array",
-                    "description": "instant messaging ids",
-                    "items": {
-                        "$ref": "#/definitions/InstantMessaging"
-                    }
-                },
-                "website": {
-                    "type": "array",
-                    "description": "websites for this contact",
-                    "items": {
-                        "$ref": "#/definitions/Website"
-                    }
-                },
-                "source": {
-                    "type": "string",
-                    "description": "lead source"
-                },
-                "referredBy": {
-                    "type": "string",
-                    "description": "optional contact name who may have referred this contact"
-                },
-                "customFields": {
-                    "type": "array",
-                    "description": "custom fields for this contact",
-                    "items": {
-                        "$ref": "#/definitions/CustomField"
-                    }
-                }
-            }
-        },
-        "Email": {
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "description": "unique email id"
-                },
-                "address": {
-                    "type": "string",
-                    "description": "email address"
-                },
-                "type": {
-                    "type": "string",
-                    "description": "work/home/other"
-                },
-                "typeId": {
-                    "type": "string",
-                    "description": "system id of the email type"
-                }
-            }
-        },
-        "Phone": {
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "description": "unique phone id"
-                },
-                "number": {
-                    "type": "string",
-                    "description": "phone number"
-                },
-                "type": {
-                    "type": "string",
-                    "description": "work/home/other"
-                },
-                "typeId": {
-                    "type": "string",
-                    "description": "system id of the phone type"
-                }
-            }
-        },
-        "Tag": {
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "description": "system id of the tag"
-                },
-                "name": {
-                    "type": "string",
-                    "description": "name of tag"
-                },
-                "score": {
-                    "type": "number",
-                    "description": "current tag score"
-                }
-            }
-        },
-        "Campaign": {
-            "properties": {
-                "id": {
-                    "type": "number",
-                    "description": "unique id of campaign"
-                },
-                "name": {
-                    "type": "string",
-                    "description": "name of campaign"
-                },
-                "step": {
-                    "type": "number",
-                    "description": "campaign step the contact is currently on"
-                }
-            }
-        },
-        "StreetAddress": {
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "description": "unique street address id"
-                },
-                "street": {
-                    "type": "string",
-                    "description": "street address"
-                },
-                "city": {
-                    "type": "string",
-                    "description": "city"
-                },
-                "state": {
-                    "type": "string",
-                    "description": "state"
-                },
-                "zip": {
-                    "type": "string",
-                    "description": "zip code"
-                },
-                "country": {
-                    "type": "string",
-                    "description": "country, must match Hatchbuck's country list"
-                },
-                "type": {
-                    "type": "string",
-                    "description": "work, home, etc..."
-                },
-                "typeId": {
-                    "type": "string",
-                    "description": "unique id of this address type"
-                }
-            }
-        },
-        "SocialNetwork": {
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "description": "unique id for contact's social network"
-                },
-                "address": {
-                    "type": "string",
-                    "description": "URL for social network"
-                },
-                "type": {
-                    "type": "string",
-                    "description": "type of social network such as facebook or twitter"
-                },
-                "typeId": {
-                    "type": "string",
-                    "description": "unique id for this social network type"
-                }
-            }
-        },
-        "InstantMessaging": {
-            "description": "when creating a new InstantMessaging record, the type or typeId must be populated with an existing value from your configuration.",
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "description": "unique identifier for contact's IM address"
-                },
-                "address": {
-                    "type": "string",
-                    "description": "contact's IM address"
-                },
-                "type": {
-                    "type": "string",
-                    "description": "type of IM address"
-                },
-                "typeId": {
-                    "type": "string",
-                    "description": "unique id of this type from your configuration"
-                }
-            }
-        },
-        "Website": {
-            "description": "a website URL for a contact",
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "description": "unique id for this website"
-                },
-                "websiteUrl": {
-                    "type": "string",
-                    "description": "url"
-                }
-            }
-        },
-        "CustomField": {
-            "description": "custom field for a contact",
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "description": "unique custom field name for this contact"
-                },
-                "type": {
-                    "type": "string",
-                    "description": "can be Text, Dropdown, MText, Number or Date"
-                },
-                "value": {
-                    "type": "string",
-                    "description": "value of custom field.  regardless of datatype specified it will always return as a string value in this field"
-                }
-            }
-        },
-        "ContactStatus": {
-            "description": "contact status for a contact",
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "description": "given name for status"
-                },
-                "id": {
-                    "type": "string",
-                    "description": "unique id for status"
-                }
-            }
-        },
-        "ContactTemperature": {
-            "description": "contact temperature",
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "description": "temperature name"
-                },
-                "id": {
-                    "type": "string",
-                    "description": "unique temperature id"
-                }
-            }
-        },
-        "ContactSalesRep": {
-            "description": "sales rep for this contact",
-            "username": {
-                "type": "string",
-                "description": "username of sales rep"
-            },
-            "id": {
-                "type": "string",
-                "description": "unique id of sales rep"
-            }
-        },
-        "ContactSource": {
-            "description": "contact source",
-            "properties": {
-                "name": {
-                    "description": "source name from system",
-                    "type": "string"
-                },
-                "id": {
-                    "description": "unique identifier",
-                    "type": "string"
-                }
-            }
-        },
-        "Error": {
-            "properties": {
-                "message": {
-                    "type": "string"
-                }
-            }
-        }
-    }
-}
+swagger: 2.0
+info:
+  title: Hatchbuck API
+  description: Do magic things with the Hatchbuck API
+  version: 1.0.0
+host: api.hatchbuck.com
+schemes:
+  - https
+basePath: /api/v1
+produces:
+  - application/json
+security:
+  - api_key: []
+paths:
+  /contact/search:
+    post:
+      summary: Contact search
+      description: Used to search for contacts, if contactId is specified then it will only use that parameter, otherwise it will use AND criteria for other supplied parameters
+      consumes:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: contact search criteria
+          required: true
+          schema:
+            $ref: #/definitions/ContactSearch
+      tags:
+        - Contacts
+      responses:
+        200:
+          description: Array of 1 or more contacts
+          schema:
+            type: array
+            items:
+              $ref: #/definitions/ContactResult
+        400:
+          description: Not found or invalid parameters
+          schema:
+            $ref: #/definitions/Error
+        401:
+          description: Security error
+          schema:
+            $ref: #/definitions/Error
+        500:
+          description: Unspecified error
+          schema:
+            $ref: #/definitions/Error
+  /contact:
+    post:
+      summary: create a new contact
+      description: create a new contact
+      consumes:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: new contact
+          required: true
+          schema:
+            $ref: #/definitions/Contact
+      tags:
+        - Contacts
+      responses:
+        200:
+          description: success
+          schema:
+            type: object
+            $ref: #/definitions/ContactResult
+    put:
+      summary: update a contact
+      description: update a contact
+      consumes:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: updated contact
+          required: true
+          schema:
+            $ref: #/definitions/Contact
+      tags:
+        - Contacts
+      responses:
+        200:
+          description: success
+          schema:
+            type: object
+            $ref: #/definitions/ContactResult
+  /settings/contactStatus:
+    get:
+      summary: get all configured contact statuses
+      description: get configured contact statuses
+      tags:
+        - Settings
+      responses:
+        200:
+          description: array of 1 or more contact statuses
+          schema:
+            type: array
+            items:
+              $ref: #/definitions/ContactStatus
+  /settings/source:
+    get:
+      summary: get all configured contact sources
+      description: get all configured contact sources
+      tags:
+        - Settings
+      responses:
+        200:
+          description: array of 1 or more contact sources
+          schema:
+            type: array
+            items:
+              $ref: #/definitions/ContactSource
+  /settings/temperature:
+    get:
+      summary: get all configured contact temperatures
+      description: get all configured contact temperatures
+      tags:
+        - Settings
+      responses:
+        200:
+          description: array of 1 or more contact temperatures
+          schema:
+            type: array
+            items:
+              $ref: #/definitions/ContactTemperature
+  /contact/{email_or_id}/tags:
+    get:
+      parameters:
+        - name: email_or_id
+          in: path
+          description: Must provide Contact ID or Email Address of contact
+          required: true
+          type: string
+      summary: Retrieve all tags associated with a specific contact
+      description: Retrieve all tags associated with a specific contact
+      tags:
+        - Tags
+      responses:
+        200:
+          description: successfully returned tags
+          schema:
+            type: array
+            items:
+              $ref: #/definitions/Tag
+    post:
+      parameters:
+        - name: email_or_id
+          in: path
+          description: Must provide Contact ID or Email Address of contact
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: User needs to specify either Tag IDs or name of the Tags that needs to be stopped for the Contact.
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: #/definitions/SimpleTag
+      summary: Add tags by email to a specific contact
+      description: Add tags to a specific contact
+      tags:
+        - Tags
+      responses:
+        201:
+          description: Successfully created tags
+          schema:
+            type: array
+            items:
+              $ref: #/definitions/Tag
+        400:
+          description: Bad Request
+          schema:
+            type: string
+        405:
+          description: Method Not Allowed
+          schema:
+            type: string
+    delete:
+      parameters:
+        - name: email_or_id
+          in: path
+          description: Must provide Contact ID or Email Address of contact
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: User needs to specify either Tag IDs or name of the Tags that needs to be stopped for the Contact.
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: #/definitions/SimpleTag
+      summary: Delete tags from a specific contact
+      description: Delete tags from a specific contact
+      tags:
+        - Tags
+      responses:
+        201:
+          description: Successfully deleted tags
+          schema:
+            type: string
+        400:
+          description: Bad Request
+          schema:
+            type: string
+        405:
+          description: Method Not Allowed
+          schema:
+            type: string
+  /contact/{email_or_id}/campaign:
+    get:
+      parameters:
+        - name: email_or_id
+          in: path
+          description: Must provide Contact ID or Email Address of contact
+          required: true
+          type: string
+      summary: Retrieve all campaigns associated with a specific contact
+      description: Retrieve all campaigns associated with a specific contact
+      tags:
+        - Campaigns
+      responses:
+        200:
+          description: Successfully returned campaigns for contact
+          schema:
+            type: array
+            items:
+              $ref: #/definitions/Campaign
+    post:
+      parameters:
+        - name: email_or_id
+          in: path
+          description: Must provide Contact ID or Email Address of contact
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: User needs to specify either Campaign ID or name of the Campaign that needs to be stopped for the Contact.
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: #/definitions/Campaign
+      summary: Start campaign for a specific contact
+      description: Start campaign for a specific contact
+      tags:
+        - Campaigns
+      responses:
+        201:
+          description: Successfully started campaign
+          schema:
+            type: string
+        400:
+          description: Bad Request
+          schema:
+            type: string
+        405:
+          description: Method Not Allowed
+          schema:
+            type: string
+    delete:
+      parameters:
+        - name: email_or_id
+          in: path
+          description: Must provide Contact ID or Email Address of contact
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: User needs to specify either Campaign ID or name of the Campaign that needs to be stopped for the Contact.
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: #/definitions/Campaign
+      summary: Stop campaign for a specific contact
+      description: Stop campaign for a specific contact
+      tags:
+        - Campaigns
+      responses:
+        201:
+          description: Successfully stopped campaign
+          schema:
+            type: string
+        400:
+          description: Bad Request
+          schema:
+            type: string
+        405:
+          description: Method Not Allowed
+          schema:
+            type: string
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: api_key
+    in: query
+definitions:
+  ContactSearch:
+    properties:
+      contactId:
+        type: string
+        description: Unique identifier for contacts.
+      firstName:
+        type: string
+        description: Description of product.
+      lastName:
+        type: string
+        description: Display name of product.
+      emails:
+        type: array
+        items:
+          $ref: #/definitions/ContactSearchEmail
+        description: "Any email addresses you're searching for"
+  ContactSearchEmail:
+    properties:
+      address:
+        type: string
+        description: email address
+  ContactResult:
+    properties:
+      contactId:
+        type: string
+        description: unique identifier for contact
+      firstName:
+        type: string
+        description: "contact's first name"
+      lastName:
+        type: string
+        description: "contact's last name"
+      title:
+        type: string
+        description: "contact's title at their place of business"
+      company:
+        type: string
+        description: company name
+      emails:
+        type: array
+        description: emails
+        items:
+          $ref: #/definitions/Email
+      phones:
+        type: array
+        description: phones
+        items:
+          $ref: #/definitions/Phone
+      tags:
+        type: array
+        description: tags
+        items:
+          $ref: #/definitions/Tag
+      campaigns:
+        type: array
+        description: current and past campaigns
+        items:
+          $ref: #/definitions/Campaign
+      status:
+        type: object
+        $ref: #/definitions/ContactStatus
+      temperature:
+        type: object
+        $ref: #/definitions/ContactTemperature
+      salesRep:
+        type: object
+        $ref: #/definitions/ContactSalesRep
+      addresses:
+        type: array
+        description: street addresses
+        items:
+          $ref: #/definitions/StreetAddress
+      subscribed:
+        type: boolean
+        description: email marketing opt-in
+      timezone:
+        type: string
+        description: timezone
+      socialNetworks:
+        type: array
+        description: social network links for contact
+        items:
+          $ref: #/definitions/SocialNetwork
+      instantMessaging:
+        type: array
+        description: instant messaging ids
+        items:
+          $ref: #/definitions/InstantMessaging
+      website:
+        type: array
+        description: websites for this contact
+        items:
+          $ref: #/definitions/Website
+      source:
+        type: string
+        description: lead source
+      referredBy:
+        type: string
+        description: optional contact name who may have referred this contact
+      customFields:
+        type: array
+        description: custom fields for this contact
+        items:
+          $ref: #/definitions/CustomField
+  Contact:
+    properties:
+      contactId:
+        type: string
+        description: unique identifier for contact
+      firstName:
+        type: string
+        description: "contact's first name"
+      lastName:
+        type: string
+        description: "contact's last name"
+      title:
+        type: string
+        description: "contact's title at their place of business"
+      company:
+        type: string
+        description: company name
+      emails:
+        type: array
+        description: emails
+        items:
+          $ref: #/definitions/Email
+      phones:
+        type: array
+        description: phones
+        items:
+          $ref: #/definitions/Phone
+      tags:
+        type: array
+        description: tags
+        items:
+          $ref: #/definitions/Tag
+      campaigns:
+        type: array
+        description: current and past campaigns
+        items:
+          $ref: #/definitions/Campaign
+      status:
+        type: object
+        $ref: #/definitions/ContactStatus
+      temperature:
+        type: object
+        $ref: #/definitions/ContactTemperature
+      salesRep:
+        type: object
+        $ref: #/definitions/ContactSalesRep
+      addresses:
+        type: array
+        description: street addresses
+        items:
+          $ref: #/definitions/StreetAddress
+      subscribed:
+        type: boolean
+        description: email marketing opt-in
+      timezone:
+        type: string
+        description: timezone
+      socialNetworks:
+        type: array
+        description: social network links for contact
+        items:
+          $ref: #/definitions/SocialNetwork
+      instantMessaging:
+        type: array
+        description: instant messaging ids
+        items:
+          $ref: #/definitions/InstantMessaging
+      website:
+        type: array
+        description: websites for this contact
+        items:
+          $ref: #/definitions/Website
+      source:
+        type: string
+        description: lead source
+      referredBy:
+        type: string
+        description: optional contact name who may have referred this contact
+      customFields:
+        type: array
+        description: custom fields for this contact
+        items:
+          $ref: #/definitions/CustomField
+  Email:
+    properties:
+      id:
+        type: string
+        description: unique email id
+      address:
+        type: string
+        description: email address
+      type:
+        type: string
+        description: work/home/other
+      typeId:
+        type: string
+        description: system id of the email type
+  Phone:
+    properties:
+      id:
+        type: string
+        description: unique phone id
+      number:
+        type: string
+        description: phone number
+      type:
+        type: string
+        description: work/home/other
+      typeId:
+        type: string
+        description: system id of the phone type
+  Tag:
+    properties:
+      id:
+        type: string
+        description: system id of the tag
+      name:
+        type: string
+        description: name of tag
+      score:
+        type: number
+        description: current tag score
+  Campaign:
+    properties:
+      id:
+        type: number
+        description: unique id of campaign
+      name:
+        type: string
+        description: name of campaign
+      step:
+        type: number
+        description: campaign step the contact is currently on
+  StreetAddress:
+    properties:
+      id:
+        type: string
+        description: unique street address id
+      street:
+        type: string
+        description: street address
+      city:
+        type: string
+        description: city
+      state:
+        type: string
+        description: state
+      zip:
+        type: string
+        description: zip code
+      country:
+        type: string
+        description: "country, must match Hatchbuck's country list"
+      type:
+        type: string
+        description: "work, home, etc..."
+      typeId:
+        type: string
+        description: unique id of this address type
+  SocialNetwork:
+    properties:
+      id:
+        type: string
+        description: "unique id for contact's social network"
+      address:
+        type: string
+        description: URL for social network
+      type:
+        type: string
+        description: type of social network such as facebook or twitter
+      typeId:
+        type: string
+        description: unique id for this social network type
+  InstantMessaging:
+    description: "when creating a new InstantMessaging record, the type or typeId must be populated with an existing value from your configuration."
+    properties:
+      id:
+        type: string
+        description: "unique identifier for contact's IM address"
+      address:
+        type: string
+        description: "contact's IM address"
+      type:
+        type: string
+        description: type of IM address
+      typeId:
+        type: string
+        description: unique id of this type from your configuration
+  Website:
+    description: a website URL for a contact
+    properties:
+      id:
+        type: string
+        description: unique id for this website
+      websiteUrl:
+        type: string
+        description: url
+  CustomField:
+    description: custom field for a contact
+    properties:
+      name:
+        type: string
+        description: unique custom field name for this contact
+      type:
+        type: string
+        description: can be Text, Dropdown, MText, Number or Date
+      value:
+        type: string
+        description: value of custom field.  regardless of datatype specified it will always return as a string value in this field
+  ContactStatus:
+    description: contact status for a contact
+    properties:
+      name:
+        type: string
+        description: given name for status
+      id:
+        type: string
+        description: unique id for status
+  ContactTemperature:
+    description: contact temperature
+    properties:
+      name:
+        type: string
+        description: temperature name
+      id:
+        type: string
+        description: unique temperature id
+  ContactSalesRep:
+    description: sales rep for this contact
+    properties:
+      username:
+        type: string
+        description: username of sales rep
+      id:
+        type: string
+        description: unique id of sales rep
+  ContactSource:
+    description: contact source
+    properties:
+      name:
+        description: source name from system
+        type: string
+      id:
+        description: unique identifier
+        type: string
+  SimpleTag:
+    description: Proper Tags Array
+    properties:
+      name:
+        type: string
+  Error:
+    properties:
+      message:
+        type: string
